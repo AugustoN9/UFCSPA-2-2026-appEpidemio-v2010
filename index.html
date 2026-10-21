@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      HUF - Monitoria de Epidemiologia: Ticagrelor vs. Clopidogrel
+    </title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- MathJax CDN para renderização de fórmulas em LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+
+  </head>
+  <body>
+    <!-- Header / Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="fa-solid fa-hospital-user me-2 text-primary"></i>HUF |
+          Epidemiologia Clínica
+        </a>
+        <span class="navbar-text text-light small d-none d-sm-inline">
+          INF06001 - Ensaio Clínico Randomizado (ECR)
+        </span>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section mb-4">
+      <div class="container">
+        <div class="row align-items-center g-3">
+          <div class="col-lg-8">
+            <h1 class="h2 fw-bold">
+              Ensaio Clínico Randomizado: Ticagrelor vs. Clopidogrel
+            </h1>
+            <p class="lead mb-0 fs-6">
+              Análise de eficácia e redução de eventos cardíacos em 18.624 pacientes (Páginas 60 e 61), acompanhada de questões aplicadas interativas.
+            </p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
+              <button
+                class="btn btn-light fw-semibold flex-fill flex-lg-grow-0"
+                onclick="mostrarConceitoEstudo()"
+              >
+                <i class="fa-solid fa-graduation-cap me-1"></i> Conceitos Chave
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container pb-5">
+
+      <!-- Section 1: KPIs & High-Level Summary -->
+      <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-sm-6">
+          <div
+            class="card card-custom p-3 text-center border-start border-primary border-4 h-100 d-flex flex-column justify-content-center"
+          >
+            <div class="kpi-title">Risco Relativo (RR)</div>
+            <div class="kpi-value text-primary" id="kpiRR">0,86</div>
+            <small class="text-muted">RT / RC</small>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div
+            class="card card-custom p-3 text-center border-start border-info border-4 h-100 d-flex flex-column justify-content-center"
+          >
+            <div class="kpi-title">Redução Relativa (RRR)</div>
+            <div class="kpi-value text-info" id="kpiRRR">14,1%</div>
+            <small class="text-muted">(1 - RR) × 100%</small>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div
+            class="card card-custom p-3 text-center border-start border-danger border-4 h-100 d-flex flex-column justify-content-center"
+          >
+            <div class="kpi-title">Redução Absoluta (RAR)</div>
+            <div class="kpi-value text-danger" id="kpiRAR">1,86 p.p.</div>
+            <small class="text-muted">RC - RT</small>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div
+            class="card card-custom p-3 text-center border-start border-success border-4 h-100 d-flex flex-column justify-content-center"
+          >
+            <div class="kpi-title">NNT (Número Nec. Tratar)</div>
+            <div class="kpi-value text-success" id="kpiNNT">54</div>
+            <small class="text-muted">1 / RAR</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Data Table & Calculations (Páginas 60 e 61) -->
+      <div class="row g-3 mb-4">
+        <!-- Table Column -->
+        <div class="col-lg-6">
+          <div class="card card-custom p-3 p-sm-4 h-100">
+            <h5 class="fw-bold mb-3">📊 Dados do Estudo (Redução de Eventos)</h5>
+            <div class="table-responsive">
+              <table class="table-2x2 align-middle">
+                <thead>
+                  <tr>
+                    <th>Grupo de Intervenção</th>
+                    <th>Nº Total (N)</th>
+                    <th class="col-casos">Eventos (n)</th>
+                    <th class="col-controles">Risco do Evento (%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="fw-bold">Ticagrelor (Tratado)</td>
+                    <td>9.333</td>
+                    <td class="col-casos">1.057</td>
+                    <td class="col-controles">11,32% (0,1132)</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Clopidogrel (Controle)</td>
+                    <td>9.291</td>
+                    <td class="col-casos">1.225</td>
+                    <td class="col-controles">13,18% (0,1318)</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr class="total-row">
+                    <td>Total de Pacientes</td>
+                    <td>18.624</td>
+                    <td>2.282</td>
+                    <td>-</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Guia explicativo retrátil -->
+            <div class="accordion accordion-collapsible mt-3" id="accordionTabelaExplicativa">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTabelaExplicativa">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseTabelaExplicativa"
+                    aria-expanded="false"
+                    aria-controls="collapseTabelaExplicativa"
+                  >
+                    💡 Entenda a Origem dos Dados (Pág. 60)
+                  </button>
+                </h2>
+                <div
+                  id="collapseTabelaExplicativa"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingTabelaExplicativa"
+                  data-bs-parent="#accordionTabelaExplicativa"
+                >
+                  <div class="accordion-body bg-light">
+                    <ul class="small mb-0">
+                      <li><strong>Risco no Tratado (RT):</strong> $1.057 / 9.333 = 11{,}32\%$</li>
+                      <li><strong>Risco no Controle (RC):</strong> $1.225 / 9.291 = 13{,}18\%$</li>
+                      <li><strong>Desfecho Cardíaco:</strong> Eventos cardiovasculares ocorridos ao longo do acompanhamento.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Math & Formulas Column -->
+        <div class="col-lg-6">
+          <div class="card card-custom p-3 p-sm-4 h-100">
+            <h5 class="fw-bold mb-3">🧮 Fórmulas e Demonstração dos Cálculos</h5>
+            
+            <div class="formula-box mb-2">
+              <div class="formula-header">
+                <span>1. Risco Relativo (RR):</span>
+              </div>
+              <div class="math-display">
+                $$\text{RR} = \frac{\text{RT}}{\text{RC}} = \frac{0{,}1132}{0{,}1318} \approx \mathbf{0{,}86}$$
+              </div>
+            </div>
+
+            <div class="formula-box mb-2">
+              <div class="formula-header">
+                <span>2. Redução Relativa (RRR) e Absoluta (RAR):</span>
+              </div>
+              <div class="math-display">
+                $$\text{RRR} = (1 - \text{RR}) \times 100\% = (1 - 0{,}859) \times 100\% = \mathbf{14{,}1\%}$$
+              </div>
+              <div class="math-display">
+                $$\text{RAR} = \text{RC} - \text{RT} = 13{,}18\% - 11{,}32\% = \mathbf{1{,}86\%} \text{ (2,9 p.p. contexto gestor)}$$
+              </div>
+            </div>
+
+            <div class="formula-box mb-0">
+              <div class="formula-header">
+                <span>3. Número Necessário para Tratar (NNT):</span>
+              </div>
+              <div class="math-display">
+                $$\text{NNT} = \frac{1}{\text{RAR}} = \frac{100}{1{,}86} \approx 53{,}76 \rightarrow \mathbf{54}$$
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Interactive Questions -->
+      <div class="card card-custom p-3 p-sm-4 mb-4">
+        <h4 class="fw-bold mb-4 text-primary fs-5 fs-sm-4">
+          <i class="fa-solid fa-clipboard-question me-2"></i>Questões Complementares & Análise Metodológica
+        </h4>
+
+        <div class="accordion accordion-collapsible" id="accordionQuestoes">
+          
+          <!-- Q1 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingQ1">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#q1"
+                aria-expanded="true"
+                aria-controls="q1"
+              >
+                1️⃣ Questão 1: Ocultação da Alocação em ECR Multicêntrico no Sistema de Dados
+              </button>
+            </h2>
+            <div
+              id="q1"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingQ1"
+              data-bs-parent="#accordionQuestoes"
+            >
+              <div class="accordion-body bg-white">
+                <p class="fw-bold">Você vai implementar a randomização de um ECR multicêntrico no sistema de coleta de dados. Que requisitos garantem a ocultação da alocação? Por que alocar pelo número do prontuário ou pelo dia da semana não serve?</p>
+                
+                <div class="list-group mb-3" id="options-q1">
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q1', 'A', 'B')">
+                    A) A alocação pode ser feita pelo prontuário, desde que o médico só consulte o número no momento da alta do paciente.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q1', 'B', 'B')">
+                    B) O sistema deve revelar o braço apenas APÓS a inclusão irreversível do paciente e manter registro de auditoria (audit trail). Métodos como prontuário ou dia da semana são previsíveis e permitem manipulação no recrutamento.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q1', 'C', 'B')">
+                    C) Alocar pelo dia da semana é um método válido de quasi-randomização em ECRs multicêntricos e elimina vieses de seleção.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q1', 'D', 'B')">
+                    D) O requisito principal é exibir a lista completa de sorteios futuros para que os centros organizem o estoque de medicamentos antecipadamente.
+                  </button>
+                </div>
+
+                <div class="alert alert-info py-2 mb-0 d-none" id="justificativa-q1">
+                  <strong>Justificativa Metodológica:</strong><br />
+                  A <strong>Ocultação da Alocação</strong> exige que a sequência aleatória permaneça inacessível ao recrutador até o momento da inclusão formal e irreversível do paciente. Regras previsíveis (como número do prontuário par/ímpar ou dia da semana) permitem que o recrutador antecipe qual tratamento o paciente receberá, podendo decidir conscientemente incluir ou excluir determinados pacientes, o que introduz um severo <strong>viés de seleção</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingQ2">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#q2"
+                aria-expanded="false"
+                aria-controls="q2"
+              >
+                2️⃣ Questão 2: Avaliação de Alerta de Sepse no Prontuário Eletrônico
+              </button>
+            </h2>
+            <div
+              id="q2"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingQ2"
+              data-bs-parent="#accordionQuestoes"
+            >
+              <div class="accordion-body bg-white">
+                <p class="fw-bold">Um hospital quer avaliar um alerta de sepse no prontuário eletrônico comparando a mortalidade antes e depois da implantação. Isso responde à pergunta? Que desenho você proporia — e qual seria a unidade de randomização?</p>
+
+                <div class="list-group mb-3" id="options-q2">
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q2', 'A', 'C')">
+                    A) Sim, a comparação antes/depois responde com máxima precisão, pois o próprio hospital serve como seu próprio controle perfeito.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q2', 'B', 'C')">
+                    B) Não responde adequadamente; o ideal é um Ensaio Clínico Individualizado randomizando pacientes individualmente dentro do mesmo setor.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q2', 'C', 'C')">
+                    C) Não, pois estudos antes/depois sofrem com vieses temporais e tendências globais. O desenho ideal é um Ensaio Randomizado por Aglomerados (Cluster) ou em Step-Wedge, tendo setores/unidades como unidade de randomização.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q2', 'D', 'C')">
+                    D) O estudo antes/depois é suficiente, bastando utilizar a idade média dos pacientes como ajuste estatístico único.
+                  </button>
+                </div>
+
+                <div class="alert alert-info py-2 mb-0 d-none" id="justificativa-q2">
+                  <strong>Justificativa Metodológica:</strong><br />
+                  Estudos do tipo "antes e depois" são vulneráveis a <strong>confundimento por tendência temporal</strong> (mudanças em protocolos, sazonalidade, perfil de pacientes). Para intervenções de nível de sistema (como alertas no prontuário), a randomização individual gera contaminação entre profissionais. Portanto, recomenda-se um <strong>Ensaio Clínico Randomizado por Aglomerados (Cluster Randomized Trial)</strong> ou <strong>Step-Wedge</strong>, em que Unidades de Terapia Intensiva ou Setores inteiros são randomizados.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingQ3">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#q3"
+                aria-expanded="false"
+                aria-controls="q3"
+              >
+                3️⃣ Questão 3: Acesso Aberto aos Desfechos e Vieses em Painéis de Monitoramento
+              </button>
+            </h2>
+            <div
+              id="q3"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingQ3"
+              data-bs-parent="#accordionQuestoes"
+            >
+              <div class="accordion-body bg-white">
+                <p class="fw-bold">No painel de monitoramento do estudo, os desfechos por braço estão visíveis para toda a equipe. Que vieses isso pode introduzir e como você configuraria o acesso?</p>
+
+                <div class="list-group mb-3" id="options-q3">
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q3', 'A', 'A')">
+                    A) Pode gerar viés de aferição e de conduta/desempenho. O acesso aos dados cegados/desagregados deve ser restrito exclusivamente ao Comitê Independente de Monitoramento de Dados (DSMB).
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q3', 'B', 'A')">
+                    B) Não gera vieses, pois a transparência total aumenta a precisão do registro dos dados pelos profissionais de saúde.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q3', 'C', 'A')">
+                    C) Gera apenas viés de memória nos pacientes; o acesso deve ser bloqueado apenas para os participantes do estudo.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q3', 'D', 'A')">
+                    D) Esse acesso deve ser mantido liberado para os médicos recrutadores ajustarem as doses dos medicamentos conforme a evolução dos braços.
+                  </button>
+                </div>
+
+                <div class="alert alert-info py-2 mb-0 d-none" id="justificativa-q3">
+                  <strong>Justificativa Metodológica:</strong><br />
+                  Se os pesquisadores clínicos visualizarem qual braço apresenta melhores ou piores resultados em tempo real, seu comportamento poderá ser alterado na avaliação do desfecho (<strong>viés de aferição</strong>) ou nos cuidados prestados aos pacientes (<strong>viés de conduta/performance</strong>). O acesso aos dados desagregados por braço deve ser protegido e restrito ao <strong>DSMB (Data Safety Monitoring Board)</strong>.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingQ4">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#q4"
+                aria-expanded="false"
+                aria-controls="q4"
+              >
+                4️⃣ Questão 4: Apresentação de Resultados de Trombólise a Gestores (RRR vs. RAR vs. NNT)
+              </button>
+            </h2>
+            <div
+              id="q4"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingQ4"
+              data-bs-parent="#accordionQuestoes"
+            >
+              <div class="accordion-body bg-white">
+                <p class="fw-bold">Você precisa mostrar o resultado da trombólise a gestores num painel. Apresentaria a RRR (24%), a RAR (2,9 p.p.) ou o NNT (34)? Qual escolha poderia superestimar o benefício?</p>
+
+                <div class="list-group mb-3" id="options-q4">
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q4', 'A', 'D')">
+                    A) A RRR é a única métrica que deve ser apresentada, pois mede a eficácia real absoluta na população.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q4', 'B', 'D')">
+                    B) Apresentar o NNT superestima o benefício, pois o número 34 parece numericamente maior que 2,9%.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q4', 'C', 'D')">
+                    C) A RAR deve ser evitada em painéis de gestão porque confunde o leitor ao utilizar pontos percentuais.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q4', 'D', 'D')">
+                    D) Apresentar isoladamente a RRR (24%) pode superestimar a percepção do benefício. O ideal é apresentar a RAR (2,9 p.p.) e o NNT (34) juntos para uma tomada de decisão fundamentada.
+                  </button>
+                </div>
+
+                <div class="alert alert-info py-2 mb-0 d-none" id="justificativa-q4">
+                  <strong>Justificativa Metodológica:</strong><br />
+                  A <strong>Redução Relativa do Risco (RRR = 24%)</strong> isolada tende a passar uma percepção exagerada do efeito, pois não considera a incidência basal da doença. A <strong>Redução Absoluta de Risco (RAR = 2,9 p.p.)</strong> e o <strong>Número Necessário para Tratar (NNT = 34)</strong> transmitem o real impacto populacional e o esforço clínico/financeiro necessário para evitar um evento.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingQ5">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#q5"
+                aria-expanded="false"
+                aria-controls="q5"
+              >
+                5️⃣ Questão 5: Incorporação em Larga Escala de Aplicativo de Telemonitoramento no SUS
+              </button>
+            </h2>
+            <div
+              id="q5"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingQ5"
+              data-bs-parent="#accordionQuestoes"
+            >
+              <div class="accordion-body bg-white">
+                <p class="fw-bold">Um aplicativo de telemonitoramento reduziu internações num ensaio clínico. O que você precisaria saber antes de recomendar sua incorporação em larga escala no SUS?</p>
+
+                <div class="list-group mb-3" id="options-q5">
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q5', 'A', 'B')">
+                    A) Apenas se o resultado de p-valor do ensaio clínico original foi menor que 0,05.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q5', 'B', 'B')">
+                    B) A efetividade na vida real (pragmatismo), a usabilidade e letramento digital da população do SUS, os custos de infraestrutura/equipe e análises de Custo-Efetividade e Impacto Orçamentário.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q5', 'C', 'B')">
+                    C) Basta confirmar se o aplicativo está disponível para download nas lojas de aplicativos de sistemas operacionais móveis.
+                  </button>
+                  <button class="list-group-item list-group-item-action quiz-option" onclick="responderQuestao('q5', 'D', 'B')">
+                    D) Se a redução de internações no ensaio clínico foi superior a 90% em ambientes controlados de laboratório.
+                  </button>
+                </div>
+
+                <div class="alert alert-info py-2 mb-0 d-none" id="justificativa-q5">
+                  <strong>Justificativa Metodológica:</strong><br />
+                  Ensaios clínicos testam a <em>eficácia</em> (condições ideais). Para a incorporação no SUS (CONITEC), é essencial avaliar a <strong>efetividade no mundo real</strong> (adesão do paciente, barreiras de conectividade e literacia digital), além de estudos de <strong>Avaliação de Tecnologias em Saúde (ATS)</strong>, incluindo Custo-Efetividade, Custo-Utilidade e Análise de Impacto Orçamentário no sistema público.
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+      <div class="container">
+        <p class="mb-1">Desenvolvido para Monitoria de Epidemiologia | UFCSPA</p>
+        <small
+          >HUF - Hospital Universitário Fictício | Disciplina INF06001 (UFCSPA) | Material Didático Simulado</small
+        >
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
